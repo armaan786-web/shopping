@@ -1,0 +1,175 @@
+{% extends 'Base/base.html' %}
+{% load static %}
+{% block main-content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-theme shadow-sm mb-4">
+            <div class="card-body">
+                <div class="card card-light mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            
+                            <div class="col align-self-center">
+                                <center>
+                                    <h5 class="mb-0">Shelvy Smith</h5>
+                                
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="card shadow-sm product">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-50 rounded bg-danger text-white">
+                                            <i class="bi bi-credit-card"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col ps-0 align-self-center">
+                                        <span class="small text-opac mb-0">Total Income</span>
+                                        <p class="mb-1">$ 521</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm product">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-50 rounded bg-success text-white">
+                                            <i class="bi bi-gift"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col ps-0 align-self-center">
+                                        <span class="small text-opac mb-0">Todays Income</span>
+                                        <p class="mb-1">$ 62</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2 ">
+                    <div class="col">
+                        <div class="card shadow-sm product">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-50 rounded bg-danger text-white">
+                                            <i class="bi bi-credit-card"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col ps-0 align-self-center">
+                                        <span class="small text-opac mb-0">Total Recharge</span>
+                                        <p class="mb-1">$ 521</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm product">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-50 rounded bg-success text-white">
+                                            <i class="bi bi-gift"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col ps-0 align-self-center">
+                                        <span class="small text-opac mb-0">Total Withdraw</span>
+                                        <p class="mb-1">$ 62</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col">
+                        <div class="card shadow-sm product">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-50 rounded bg-danger text-white">
+                                            <i class="bi bi-credit-card"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col ps-0 align-self-center">
+                                        <span class="small text-opac mb-0">Total Assets</span>
+                                        <p class="mb-1">$ 521</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm product">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-50 rounded bg-success text-white">
+                                            <i class="bi bi-gift"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col ps-0 align-self-center">
+                                        <span class="small text-opac mb-0">Team Income</span>
+                                        <p class="mb-1">$ 62</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mb-4">
+    <div class="col d-grid">
+        <a href="{% url 'myorder' %}" class="btn btn-info btn-lg shadow-sm">My Products</a>
+        
+    </div>
+    <div class="col d-grid">
+        <a href="chat.html" class="btn btn-danger btn-lg  shadow-sm">Redeem Gifts</a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col d-grid">
+        <button class="btn btn-warning btn-lg shadow-sm">Refer Friends</button>
+    </div>
+    <div class="col d-grid">
+        <a href="chat.html" class="btn btn-lg btn-theme shadow-sm">Contact Us</a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col d-grid">
+        <button class="btn bg-success btn-lg shadow-sm">Guide</button>
+    </div>
+    {% comment %} <div class="col d-grid">
+        <a href="chat.html" class="btn btn-lg btn-theme shadow-sm">Contact Us</a>
+    </div> {% endcomment %}
+</div>
+
+<!-- experince -->
+
+
+<!-- address  -->
+
+
+
+<!-- freinds -->
+
+
+{% endblock main-content %}
