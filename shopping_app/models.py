@@ -20,8 +20,8 @@ class Profile(models.Model):
         super().save(*args, **kwargs)
 
 
-    def __str__(self):
-        return self.user.username
+    # def __str__(self):
+    #     return self.user.username
 
 
 
@@ -67,6 +67,7 @@ class Booking(models.Model):
     user = models.ForeignKey(Profile,on_delete=models.CASCADE)
     product = models.ForeignKey(Prodcut,on_delete=models.CASCADE)
     booking_Date = models.DateField(auto_now_add=True)
+    daily_wise_commission = models.IntegerField(default=0,null=True,blank=True)
     
     def __str__(self):
         return self.user.user.username
@@ -81,4 +82,28 @@ class Kyc(models.Model):
 
     def __str__(self):
         return self.user
+
+
+
+class commision(models.Model):
+    booking = models.ForeignKey(to=Booking,on_delete=CASCADE)
+    commision = models.IntegerField()
+
+    def __str__(self):
+        return self.booking.user
     
+
+    
+
+wallet_request = (
+    ("Pending","Pending"),
+    ("Accept","Accept"),
+    ("Reject","Reject"),
+    
+) 
+class Wallet(models.Model):
+    user = models.ForeignKey(to=Profile,on_delete=CASCADE)
+    # booking = models.ForeignKey(to=Booking,on_delete=CASCADE)
+    amount = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    wallet_request = models.CharField(max_length=50,choices=wallet_request,default="Pending")

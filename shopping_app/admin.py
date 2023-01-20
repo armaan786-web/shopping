@@ -39,3 +39,4 @@ class BookAdmin(admin.ModelAdmin):
     #list_filter = ['title', 'author__name']
 
 admin.site.register(Booking, BookAdmin)
+admin.site.register(Wallet)

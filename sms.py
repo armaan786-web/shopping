@@ -9,7 +9,7 @@ print(otp)
 
 
 # url = "https://www.fast2sms.com/dev/bulkV2"
-# message = "Hello Armaan"
+# message = otp
 # numbers = 9973884727
 # payload = f"sender_id=TXTIND&message={message}&route=v3&language=english&numbers=9973884727"
 
@@ -22,4 +22,4 @@ print(otp)
 
 # response = requests.request("POST", url, data=payload, headers=headers)
 
-# print(response.text)
+# # print(response.text)

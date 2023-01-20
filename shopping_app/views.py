@@ -4,19 +4,24 @@ from django.contrib import messages
 from shopping_app.EmailBackEnd import EmailBackEnd
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Prodcut,Recharge,Profile,Booking,Kyc
+from .models import Prodcut,Recharge,Profile,Booking,Kyc,Wallet
 from django.db.models import Q
 import random,math
+import requests
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required(login_url="signin")
 def home(request):
     return render(request,'homepage/home.html')
 
-
+@login_required(login_url="signin")
 def product(request):
     product = Prodcut.objects.all()
     return render(request,'Products/product.html',{'product':product})
 
+
+@login_required(login_url="signin")
 def product_detail(request,id):
     product = Prodcut.objects.get(id=id)
     # user = Profile.objects.get(user=request.user)
@@ -26,70 +31,173 @@ def product_detail(request,id):
     #             return redirect('signup')
     return render(request,'Products/product_detail.html',{'product':product})
 
+
+@login_required(login_url="signin")
 def wallet(request):
+    
+    
+        # print("sssssssss",daily_commission)
     total_amount = 0
-    user = Profile.objects.get(user=request.user)
-    pr =Booking.objects.get(user=user)
-    commission = pr.product.commission
-   
     recharge = Recharge.objects.all()
     if recharge:
-            for p in recharge:
-                if p.recharge_request == "Accept":
+        for p in recharge:
+            if p.recharge_request == "Accept":
 
-                    total_amount += p.amount
-                # print("total",total_amount)
-    context = {
+                total_amount += p.amount
+    user2 = Profile.objects.get(user=request.user)
+    
+    
+    balance_wallet = Booking.objects.filter(user=user2)
+    daily_commission = 0
+    if balance_wallet:
+        for wallet in balance_wallet:
+            daily_commission += wallet.daily_wise_commission
+        
+        if request.method == "POST":
+            amount = int(request.POST.get('amount'))
+            
+           
+            if amount <= 1000 | amount > daily_commission:
+                messages.warning(request,"Insufficient Balance")
+                return redirect('wallet')
+            # user3 = Profile.objects.get(id=request.user.id)
+            # booking = Booking.objects.get(id=user3)
+            wallt = Wallet.objects.create(user=user2,amount=amount)
+            wallt.save()
+            messages.success(request,"your wallet request successfully")
+
+       
+        context = {
         'total_amount':total_amount,
-        'commission':commission
-    }
+        'commission':daily_commission
+        }
+        
     return render(request,'Wallet/wallet.html',context)
+   
+    # try:      
+    #     recharge = Recharge.objects.all()
+    #     if recharge:
+    #         for p in recharge:
+    #             if p.recharge_request == "Accept":
+
+    #                 total_amount += p.amount
+    #     user2 = Profile.objects.get(user=request.user)
+    #     balance_wallet = Booking.objects.filter(user=user2)
+    #     daily_commission = 0
+    #     if balance_wallet:
+    #         for wallet in balance_wallet:
+    #             daily_commission += wallet.daily_wise_commission
+        
+    #     if request.method == "POST":
+    #         amount = request.POST.get('amount')
+    #         print("ammmmmmmmmmmmm",amount)
+           
+    #         if amount <= 1000 :
+    #             messages.warning(request,"Insufficient Balance")
+    #             print("inssucfff")
+    #             return redirect('wallet')
+
+    #         else:
+    #             print("errorrr")
+       
+    #     context = {
+    #     'total_amount':total_amount,
+    #     'commission':daily_commission
+    #     }
+        
+    #     return render(request,'Wallet/wallet.html',context)
+    # except:
+    #     pass
+    
+    #             # print("total",total_amount)
+   
+    # return render(request,'Wallet/wallet.html')
 
 
 def signup(request):
+
+    # if request.method == "POST":
+       
+            #         if otp == otp_verfication:
+                
+    #             user = User.objects.create_user(username=username,password=password)
+    #             user.profile.mobile = mobile  
+    #         # user.save()
+    #             messages.success(request,"Registration sucessfully Please Sign In ")
+    #             return redirect("signin")      
+    #         else:
+    #             print("otp is not valid")
+   
+    
+    #     # print("verif",otp_verfication)
+    #     otp = ""
+    #     for i in range(1,7):
+    #         a = random.random()
+    #         b = math.floor(a*10)
+    #         otp += str(b)
+        
+    #     print("hello",username,mobile,password,otp,otp_verfication)
+        
+    #     try:
+    #         if User.objects.filter(username = username).exists():
+    #             messages.warning(request, "Username is already Taken")
+    #             return redirect('signup')
+            
+    #         if otp == otp_verfication:
+                
+    #             user = User.objects.create_user(username=username,password=password)
+    #             user.profile.mobile = mobile  
+    #         # user.save()
+    #             messages.success(request,"Registration sucessfully Please Sign In ")
+    #             return redirect("signin")      
+    #         else:
+    #             print("otp is not valid")
+   
     
    
     return render(request,'signup/signup.html')
 
 def otp(request):
-    
-    
-    
-    if request.method == "POST":
-        # reference_no = request.POST.get("reference_no")
-        username = request.POST.get("username")
-        mobile = request.POST.get("mob_no")
-        password = request.POST.get("password")
-        otp_verfication = request.POST.get("otp_verfication")
-        # print("verif",otp_verfication)
-        otp = ""
-        for i in range(1,7):
-            a = random.random()
-            b = math.floor(a*10)
-            otp += str(b)
-        
-        print("hello",username,mobile,password,otp,otp_verfication)
-        
-        try:
-            if User.objects.filter(username = username).exists():
-                messages.warning(request, "Username is already Taken")
-                return redirect('signup')
-            
-            if otp == otp_verfication:
-                
-                user = User.objects.create_user(username=username,password=password)
-                user.profile.mobile = mobile  
-            # user.save()
-                messages.success(request,"Registration sucessfully Please Sign In ")
-                return redirect("signin")      
-            else:
-                print("otp is not valid")
-            
-            
-        except:
-            messages.error(request,"somthing is wrong try again!!")
-            return redirect("signup")
+    username = request.POST.get("username")
+    mobile = request.POST.get("mob_no")
+    password = request.POST.get("password")
    
+
+    try:
+        if User.objects.filter(username = mobile).exists():
+            messages.warning(request, "Mobile Number is already Taken")
+            return redirect('signup')
+        user = User.objects.create_user(username=mobile,password=password,first_name=username)
+        user.profile.mobile = mobile  
+        user.save()
+        
+
+    except:
+            pass
+
+    otp = ""
+    for i in range(1,7):
+        a = random.random()
+        b = math.floor(a*10)
+        otp += str(b)
+    
+    
+    url = "https://www.fast2sms.com/dev/bulkV2"
+    message = otp
+    numbers = mobile
+    payload = f"sender_id=TXTIND&message={message}&route=v3&language=english&numbers={numbers}"
+    headers = {
+    'authorization': "aiLHjGsN0AKYPUqTFp3lM5weZzct4xhE9VXI2yCDBnoR6gJvrOFE0Hr9UQcWn4vePkmwxfVdGjIb6Aga",
+    'Content-Type': "application/x-www-form-urlencoded",
+    'Cache-Control': "no-cache",
+    }
+    
+    response = requests.request("POST", url, data=payload, headers=headers)
+
+    # if request.method == "POST":
+    #     return redirect("signin")
+        
+
     return render(request,'Otp/otp.html')
 def signin(request):
 
@@ -100,6 +208,7 @@ def signin(request):
         
         if user!=None:
             login(request,user)
+            # if user.is_superuser
             return redirect("home")
             # return HttpResponseRedirect('home')
            
@@ -109,11 +218,13 @@ def signin(request):
             return redirect('signin')
     
    
+    if request.user.is_authenticated:
+        return redirect("home")
 
     return render(request,'signup/signin.html')
 
 
-
+@login_required(login_url="signin")
 def profile(request):
     return render(request,'Profile/profile.html')    
 
@@ -190,7 +301,7 @@ def myorder(request):
 
 
 def kyc(request):
-    kyc = Kyc.objects.all()
+    
     user = Profile.objects.get(user=request.user)
     if request.method == "POST":
         name = request.POST.get("name")
@@ -203,5 +314,70 @@ def kyc(request):
             kyc.save()
         except:
             messages.error(request,"something is error Try Again !!")
-            
+    kyc = Kyc.objects.all()   
     return render(request,'kyc/kyc.html',{'kyc':kyc})
+
+
+
+def commision(request):
+    return render(request,'commission/commission.html')
+
+
+def admin_orders(request):
+    booking = Booking.objects.all()
+    if request.method == "POST":
+        commission2 = request.POST.get('commission')
+        id = request.POST.get('prod_id')
+        
+        book = Booking.objects.get(id=id)
+        
+        book.daily_wise_commission=commission2
+       
+        book.save()
+    return render(request,'admin_panel/order/order.html',{'booking':booking})
+
+def admin_kyc(request):
+    kyc = Kyc.objects.all()
+    return render(request,'admin_panel/kyc/kyc.html',{'kyc':kyc})
+
+def admin_recharge(request):
+    recharge = Recharge.objects.all()
+    return render(request,'admin_panel/Recharge/recharge.html',{'recharge':recharge})
+
+
+def recharge_status(request,id):
+    
+    recharge=Recharge.objects.get(id=id)
+    recharge.recharge_request= "Accept"
+    recharge.save()
+    return redirect('admin_recharge')
+
+
+
+def recharge_rejected(request,id):
+    recharge=Recharge.objects.get(id=id)
+    recharge.recharge_request= "Reject"
+    recharge.save()
+    return redirect('admin_recharge')
+
+
+def walletrequest(request):
+    wallet=Wallet.objects.all()
+    
+    return render(request,'admin_panel/walletRequest/wallet.html',{'wallet':wallet})
+
+
+def walletreject(request,id):
+    wallet=Wallet.objects.get(id=id)
+    wallet.wallet_request= "Reject"
+    wallet.save()
+    return redirect('walletrequest')
+
+
+# def dailywise_commission(request,id):
+#     if request.method == "POST":
+#         commission = request.POST.get('commission')
+#         booking = Booking.objects.get(id=id)
+#         booking.daily_wise_commission=commission
+#         booking.save()
+#     return redirect('adminorder')

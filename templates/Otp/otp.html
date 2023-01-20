@@ -74,14 +74,12 @@
                         <p class=" mb-4">Verify OTP sent to your provided mobile number</p>
                         <div class="card card-light shadow-sm mb-4">
                             <div class="card-body">
-                                <form method="POST">
+                                <form method="POST" action="{% url 'signin' %}">
                                     {% csrf_token %}
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="otp" placeholder="Enter OTP" name="otp_verfication">
+                                        <input type="text" class="form-control" id="otp" placeholder="Enter OTP" name="otp2" Required>
                                         <label for="otp">OTP verification</label>
-                                        {% comment %} <button type="submit" class="btn btn-link text-success tooltip-btn valid-tooltip" data-bs-toggle="tooltip" data-bs-placement="left" title="Email is valid">
-                                            <i class="bi bi-check-circle"></i>
-                                        </button> {% endcomment %}
+                                        
                                     </div>
                                 
 

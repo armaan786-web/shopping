@@ -42,6 +42,23 @@ urlpatterns = [
 
     # ------------------------ Kyc Url -------------------
     path("Kyc/",views.kyc,name="kyc"),
+
+
+    # ------------------------ Commission Url -------------------
+    path("commision/",views.commision,name="commision"),
+    
+
+    
+    # ------------------------ Admin Url -------------------
+    # path("admin/login",views.admin_login,name="admin_login"),
+    path('admin_booking',views.admin_orders,name="adminorder"),
+    path('admin_kyc',views.admin_kyc,name="admin_kyc"),
+    path('admin_recharge',views.admin_recharge,name="admin_recharge"),
+    path('recharge_status/<int:id>',views.recharge_status,name="recharge_status"),
+    path('recharge_rejected/<int:id>',views.recharge_rejected,name="recharge_rejected"),
+    path('walletRequest',views.walletrequest,name="walletrequest"),
+    path('walletreject/<int:id>',views.walletreject,name="walletreject"),
+    # path('dailywise_commission/<int:id>',views.dailywise_commission,name="dailywise_commission"),
     
 
     

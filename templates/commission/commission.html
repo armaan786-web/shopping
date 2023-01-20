@@ -6,22 +6,19 @@
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">UPI ID</th>
-        <th scope="col">Amount</th>
-        <th scope="col">UTR</th>
-        <td scope="col">Date</td>
-        <td scope="col">Status</td>
+        <th scope="col">Product Name</th>
+        <th scope="col">Income</th>
+       
       </tr>
     </thead>
     <tbody>
         {% for i in recharge %}
       <tr>
         
-        <th scope="row">{{forloop.counter}}</th>
-        <td>{{i.upi_id}}</td>
-        <td>{{i.amount}}</td>
-        <td>{{i.utr}}</td>
-        <td>{{i.date}}</td>
+        {% comment %} <th scope="row">{{forloop.counter}}</th> {% endcomment %}
+        <td>abc</td>
+        <td>abc</td>
+        
         
         <td>{{i.recharge_request}}</td>
     </tr>

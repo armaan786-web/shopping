@@ -1,6 +1,7 @@
 {% extends 'Base/base.html' %}
 {% load static %}
 {% block main-content %}
+<center><p>{% include 'Base/messages.html' %}</p></center>
 
 <div class="row">
     <div class="col-12">
@@ -103,13 +104,16 @@
           <h5 class="modal-title" id="staticBackdropLabel">Withdraw</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <form method="POST">
+            {% csrf_token %}
         <div class="modal-body">
-          <input class="form-control" type="number" placeholder="Amount">
+          <input class="form-control" type="number" placeholder="Amount" name="amount" required>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Send</button>
+          <button type="submit" class="btn btn-primary">Send</button>
         </div>
+    </form>
       </div>
     </div>
   </div>
