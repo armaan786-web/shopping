@@ -61,6 +61,9 @@ urlpatterns = [
     # path('dailywise_commission/<int:id>',views.dailywise_commission,name="dailywise_commission"),
     
 
+    # ---------------------------------- Team ---------------------------- 
+
+    path('team',views.team_list,name="team"),
     
     
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

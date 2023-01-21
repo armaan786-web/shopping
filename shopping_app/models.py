@@ -3,6 +3,7 @@ from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import User
 from .utils import generate_ref_code
 import math
+from django.db.models import Sum
 
 # Create your models here.
 
@@ -11,6 +12,7 @@ class Profile(models.Model):
     user = models.OneToOneField(to=User,on_delete=CASCADE)
     mobile = models.CharField(max_length=100)
     referral_id = models.CharField(max_length=12,blank=True)
+    refer_by = models.CharField(max_length=50,null=True,blank=True)
 
     
     def save(self, *args, **kwargs):
@@ -19,6 +21,9 @@ class Profile(models.Model):
             self.referral_id = user_id
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return self.user.first_name
+    
 
     # def __str__(self):
     #     return self.user.username
@@ -68,9 +73,21 @@ class Booking(models.Model):
     product = models.ForeignKey(Prodcut,on_delete=models.CASCADE)
     booking_Date = models.DateField(auto_now_add=True)
     daily_wise_commission = models.IntegerField(default=0,null=True,blank=True)
+    abc = models.IntegerField(default=0,null=True,blank=True)
+    
     
     def __str__(self):
         return self.user.user.username
+
+    def update_user_total_commission(self):
+        user_bookings = Booking.objects.filter(product=self.product)
+        total_commission = sum(booking.daily_wise_commission for booking in user_bookings)
+       
+        return total_commission
+    
+   
+
+    
     
 
 class Kyc(models.Model):
@@ -102,8 +119,13 @@ wallet_request = (
     
 ) 
 class Wallet(models.Model):
-    user = models.ForeignKey(to=Profile,on_delete=CASCADE)
-    # booking = models.ForeignKey(to=Booking,on_delete=CASCADE)
+    
+    user = models.ManyToManyField(to=Booking,related_name="wallet_set")
     amount = models.IntegerField()
     date = models.DateField(auto_now_add=True)
     wallet_request = models.CharField(max_length=50,choices=wallet_request,default="Pending")
+
+
+    def create(self, *args, **kwargs):
+        self.amount -= self.user.booking_set.all().aggregate(Sum('daily_wise_commission'))['daily_wise_commission__sum']
+        super(Wallet, self).create(*args, **kwargs)

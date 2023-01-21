@@ -45,32 +45,28 @@ def wallet(request):
 
                 total_amount += p.amount
     user2 = Profile.objects.get(user=request.user)
-    
+   
     
     balance_wallet = Booking.objects.filter(user=user2)
-    daily_commission = 0
-    if balance_wallet:
-        for wallet in balance_wallet:
-            daily_commission += wallet.daily_wise_commission
+    daily_commission = sum(booking.daily_wise_commission for booking in balance_wallet)
+    
+   
+    # wll = Wallet.objects.get(user=user2)
         
-        if request.method == "POST":
-            amount = int(request.POST.get('amount'))
-            
-           
-            if amount <= 1000 | amount > daily_commission:
-                messages.warning(request,"Insufficient Balance")
-                return redirect('wallet')
-            # user3 = Profile.objects.get(id=request.user.id)
-            # booking = Booking.objects.get(id=user3)
-            wallt = Wallet.objects.create(user=user2,amount=amount)
-            wallt.save()
-            messages.success(request,"your wallet request successfully")
-
+    if request.method == "POST":
+        amount = int(request.POST.get('amount'))
+        
+        
+        if amount <= 1000 | amount > daily_commission:
+            messages.warning(request,"Insufficient Balance")
+            return redirect('wallet')
+        
        
-        context = {
-        'total_amount':total_amount,
-        'commission':daily_commission
-        }
+    
+    context = {
+    'total_amount':total_amount,
+    'commission':daily_commission
+    }
         
     return render(request,'Wallet/wallet.html',context)
    
@@ -113,7 +109,7 @@ def wallet(request):
    
     # return render(request,'Wallet/wallet.html')
 
-
+        
 def signup(request):
 
     # if request.method == "POST":
@@ -158,6 +154,7 @@ def signup(request):
     return render(request,'signup/signup.html')
 
 def otp(request):
+    referral = request.POST.get("referral")
     username = request.POST.get("username")
     mobile = request.POST.get("mob_no")
     password = request.POST.get("password")
@@ -167,9 +164,22 @@ def otp(request):
         if User.objects.filter(username = mobile).exists():
             messages.warning(request, "Mobile Number is already Taken")
             return redirect('signup')
-        user = User.objects.create_user(username=mobile,password=password,first_name=username)
-        user.profile.mobile = mobile  
-        user.save()
+        if Profile.objects.filter(referral_id=referral).exists:
+            print("helooooooooooooo")
+
+            user = User.objects.create_user(username=mobile,password=password,first_name=username)
+            user.profile.mobile = mobile  
+            user.profile.refer_by = referral  
+            user.save()
+        else:
+            messages.warning(request, "Referral code no match")
+            return redirect('signup')
+        if referral == "":
+            user = User.objects.create_user(username=mobile,password=password,first_name=username)
+            user.profile.mobile = mobile  
+            user.profile.refer_by = referral
+            user.save()
+
         
 
     except:
@@ -192,7 +202,7 @@ def otp(request):
     'Cache-Control': "no-cache",
     }
     
-    response = requests.request("POST", url, data=payload, headers=headers)
+    # response = requests.request("POST", url, data=payload, headers=headers)
 
     # if request.method == "POST":
     #     return redirect("signin")
@@ -381,3 +391,13 @@ def walletreject(request,id):
 #         booking.daily_wise_commission=commission
 #         booking.save()
 #     return redirect('adminorder')
+
+
+
+def team_list(request):
+    user = Profile.objects.get(user=request.user.id)
+    
+    
+    # profile = Profile.objects.get(refer_by=user)
+    print("profile",profile)
+    return render(request,'Team/team_list.html',{'user':user})

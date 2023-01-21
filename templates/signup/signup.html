@@ -75,6 +75,13 @@
                                     {% csrf_token %}
 
                                     <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="username" placeholder="Referral Code" name="referral">
+                                        <label for="username">Referral Code</label>
+                                        {% comment %} <button type="button" class="btn btn-link text-success tooltip-btn valid-tooltip" data-bs-toggle="tooltip" data-bs-placement="left" title="Email is valid">
+                                            <i class="bi bi-check-circle"></i>
+                                        </button> {% endcomment %}
+                                    </div>
+                                    <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="username" placeholder="Username" name="username" Required>
                                         <label for="username">Username</label>
                                         <button type="button" class="btn btn-link text-success tooltip-btn valid-tooltip" data-bs-toggle="tooltip" data-bs-placement="left" title="Email is valid">
