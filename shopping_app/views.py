@@ -236,7 +236,8 @@ def signin(request):
 
 @login_required(login_url="signin")
 def profile(request):
-    return render(request,'Profile/profile.html')    
+    profile = Profile.objects.get(user=request.user)
+    return render(request,'Profile/profile.html',{'profile':profile})    
 
 
 
@@ -395,9 +396,9 @@ def walletreject(request,id):
 
 
 def team_list(request):
-    user = Profile.objects.get(user=request.user.id)
+    # profile = Profile.objects.filter(referral_id=request.user)
+    profile = Profile.objects.filter(refer_by=request.user.profile.referral_id)
     
-    
-    # profile = Profile.objects.get(refer_by=user)
-    print("profile",profile)
-    return render(request,'Team/team_list.html',{'user':user})
+  
+   
+    return render(request,'Team/team_list.html',{'profile':profile})

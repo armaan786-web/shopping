@@ -146,7 +146,7 @@
 
 <div class="row mb-4">
     <div class="col d-grid">
-        <button class="btn btn-warning btn-lg shadow-sm">Refer Friends</button>
+        <button class="btn btn-warning btn-lg shadow-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Refer Code</button>
     </div>
     <div class="col d-grid">
         <a href="chat.html" class="btn btn-lg btn-theme shadow-sm">Contact Us</a>
@@ -170,6 +170,26 @@
 
 
 <!-- freinds -->
+<!-- Button trigger modal -->
 
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Your Refer Code....</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h6 class='text-primary'>{{profile.referral_id}}</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          {% comment %} <button type="button" class="btn btn-primary">Understood</button> {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock main-content %}

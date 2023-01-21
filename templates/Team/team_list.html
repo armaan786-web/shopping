@@ -1,32 +1,38 @@
 {% extends 'Base/base.html' %}
 {% block main-content %}
-{% for i in user %}
-{{i.refer_by}}
-{% endfor %}
+ <h1>
+  {% for i in profile %}
+  {{i.user.first_name}}
+  {% endfor %}
+
+  {% comment %} {% for i in user %}
+{{i.user.first_name}}
+{% endfor %}  {% endcomment %}
+ </h1>
 
 <div class="table-responsive">
 <table class="table ">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">UPI ID</th>
-        <th scope="col">Amount</th>
-        <th scope="col">UTR</th>
-        <td scope="col">Date</td>
-        <td scope="col">Status</td>
+        <th scope="col">Username</th>
+        <th scope="col">Mobile No</th>
+        <th scope="col">Refferal Code</th>
+        <td scope="col">Refer By</td>
+        
       </tr>
     </thead>
     <tbody>
-        {% for i in recharge %}
+        {% for i in profile %}
       <tr>
         
         <th scope="row">{{forloop.counter}}</th>
-        <td>{{i.upi_id}}</td>
-        <td>{{i.amount}}</td>
-        <td>{{i.utr}}</td>
-        <td>{{i.date}}</td>
+        <td>{{i.user.first_name}}</td>
+        <td>{{i.mobile}}</td>
+        <td>{{i.referral_id}}</td>
+        <td>{{i.refer_by}}</td>
         
-        <td>{{i.recharge_request}}</td>
+        
     </tr>
     {% endfor %}
      
